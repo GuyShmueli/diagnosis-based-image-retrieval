@@ -9,13 +9,14 @@ Usage:
 
 If you need custom paths:
     python filter_captions.py --data-path /path/to/data2 \
-                              --output-dir /path/to/output
+                              --jsons-path /path/to/output
 """
 
 import os
 import pandas as pd
 import re
 import json
+import argparse
 from concurrent.futures import ThreadPoolExecutor
 
 
@@ -91,8 +92,7 @@ patterns = [
 DATA_PATH = '/cs/labs/tomhope/dhtandguy21/restore_yuvalbus/data2'
 JSONS_PATH = '/cs/labs/tomhope/dhtandguy21/largeListsGuy'
 
-def main(jsons_path=JSONS_PATH,
-         data_path=DATA_PATH):
+def main(data_path, jsons_path):
     """Load, filter and save caption data for compound‐figure removal."""
     # Uploading the csv
     df = upload_csv(os.path.join(data_path, 'final_csv2.csv'))
@@ -110,4 +110,22 @@ def main(jsons_path=JSONS_PATH,
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(
+        description="Remove any caption that describes more than one sub-image.")
+    
+    parser.add_argument(
+        "--data_path",
+        "-d",                # -d is a short option for data paths
+        default=DATA_PATH,
+        help="root directory where original csv is stored (default: %(default)s)")
+    
+    parser.add_argument(
+        "--jsons_path",
+        "-j",                # -j is a short option for JSONs paths
+        default=JSONS_PATH,
+        help="directory where the filtered csv is stored (default: %(default)s)")
+    
+    args = parser.parse_args()
+
+    # Run main()
+    main(args.data_path, args.jsons_path)
