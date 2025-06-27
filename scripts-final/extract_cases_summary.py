@@ -72,13 +72,18 @@ def main(jsons_path):
     case_summary_pairs_list = multiprocess_case_summaries(matching_uids_xml_paths)
     case_summary_pairs_list = [list(case_summary_pairs_list[idx].values()) for idx in range(len(case_summary_pairs_list))]
 
+    summaries_valid_indices, invalid_indices = calc_indices_summaries_list(case_summary_pairs_list)
+
     with open (os.path.join(jsons_path, 'case_summary_pairs_list.json'), 'w') as f:
         json.dump(case_summary_pairs_list, f)
 
-    print(f"Extracted {len(calc_indices_summaries_list(case_summary_pairs_list)[0])} valid case summaries.")
-    print(f"There are {len(calc_indices_summaries_list(case_summary_pairs_list)[1])} missing case summaries.")
+    with open(os.path.join(jsons_path, 'summaries_valid_indices.json'), 'w') as f:
+        json.dump(summaries_valid_indices, f)
 
+    print(f"Extracted {len(summaries_valid_indices)} valid case summaries.")
+    print(f"There are {len(invalid_indices)} missing case summaries.")
 
+    
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Extract case summaries from NXML files."
