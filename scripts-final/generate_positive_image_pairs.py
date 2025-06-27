@@ -8,7 +8,6 @@ Usage:
   python generate_positive_prompts.py \
     --answers-json /path/to/generated_answers.json \
     --questions-json /path/to/generated_questions.json \
-    --pairs-text-list-json /path/to/pairs_text_list.json \
     --pairs-text-json /path/to/pairs_text.json \
     --common-indices-json /path/to/common_indices.json \
     --stems-3d-json /path/to/stems_3d.json \
@@ -41,8 +40,6 @@ def main(args):
         generated_answers = json.load(f)
     with open(args.questions_json, 'r', encoding='utf-8') as f:
         generated_questions = json.load(f)
-    with open(args.pairs_text_list_json, 'r', encoding='utf-8') as f:
-        pairs_text_list = json.load(f)
     with open(args.pairs_text_json, 'r', encoding='utf-8') as f:
         pairs_text = json.load(f)
     with open(args.common_indices_json, 'r', encoding='utf-8') as f:
@@ -153,14 +150,13 @@ def main(args):
 
     print(f"Wrote {len(prompts)} requests to {args.output_jsonl} and started batch.")
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate a batch JSONL of prompts for OpenAI chat completions.")
     parser.add_argument("--answers-json", 
                         default="/cs/labs/tomhope/yuvalbus/pmc/pythonProject/largeListsGuy/generated_answers.json")
     parser.add_argument("--questions-json",
                         default="/cs/labs/tomhope/yuvalbus/pmc/pythonProject/largeListsGuy/generated_questions.json")
-    parser.add_argument("--pairs-text-list-json",
-                        default="/cs/labs/tomhope/yuvalbus/pmc/pythonProject/largeListsGuy/pairs_text_list.json")
     parser.add_argument("--pairs-text-json",
                         default="/cs/labs/tomhope/yuvalbus/pmc/pythonProject/largeListsGuy/pairs_text.json")
     parser.add_argument("--common-indices-json",  
